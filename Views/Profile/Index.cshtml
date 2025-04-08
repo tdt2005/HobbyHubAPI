@@ -1,0 +1,85 @@
+﻿@model Profile.Models.User
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Hồ sơ của bạn</h2>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+    }
+
+    <!-- Phần hiển thị thông tin -->
+    <div class="card p-4 shadow-sm mb-4" style="border-radius: 15px;">
+        <h4 class="mb-3">Thông tin cá nhân</h4>
+        <dl class="row">
+            <dt class="col-sm-3">Email</dt>
+            <dd class="col-sm-9">@Model.Email</dd>
+
+            <dt class="col-sm-3">Họ</dt>
+            <dd class="col-sm-9">@Model.Profile?.LastName</dd>
+
+            <dt class="col-sm-3">Tên</dt>
+            <dd class="col-sm-9">@Model.Profile?.FirstName</dd>
+
+            <dt class="col-sm-3">Số điện thoại</dt>
+            <dd class="col-sm-9">@Model.Profile?.PhoneNumber</dd>
+
+            <dt class="col-sm-3">Sở thích</dt>
+            <dd class="col-sm-9">@(Model.Profile?.Hobbies != null && Model.Profile.Hobbies.Any() ? string.Join(", ", Model.Profile.Hobbies) : "Chưa có")</dd>
+        </dl>
+    </div>
+
+    <!-- Phần cập nhật thông tin -->
+    <div class="card p-4 shadow-sm" style="border-radius: 15px;">
+        <h4 class="mb-3">Cập nhật hồ sơ</h4>
+        <form asp-action="UpdateProfile" asp-controller="Profile" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <input type="hidden" asp-for="UserID" />
+            <input type="hidden" asp-for="Email" />
+
+            <div class="form-group mb-3">
+                <input asp-for="Profile.FirstName" class="form-control" placeholder="Tên" />
+                <span asp-validation-for="Profile.FirstName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <input asp-for="Profile.LastName" class="form-control" placeholder="Họ" />
+                <span asp-validation-for="Profile.LastName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <input asp-for="Profile.PhoneNumber" class="form-control" placeholder="Số điện thoại" />
+                <span asp-validation-for="Profile.PhoneNumber" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label>Hobbies</label>
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" name="Hobbies" value="Books" @(Model.Profile?.Hobbies != null && Model.Profile.Hobbies.Contains("Books") ? "checked" : "") />
+                    <label class="form-check-label">Books</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" name="Hobbies" value="Games" @(Model.Profile?.Hobbies != null && Model.Profile.Hobbies.Contains("Games") ? "checked" : "") />
+                    <label class="form-check-label">Games</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" name="Hobbies" value="Movies" @(Model.Profile?.Hobbies != null && Model.Profile.Hobbies.Contains("Movies") ? "checked" : "") />
+                    <label class="form-check-label">Movies</label>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block">Update</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

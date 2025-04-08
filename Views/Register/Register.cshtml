@@ -1,0 +1,83 @@
+﻿@model Profile.Models.RegisterViewModel
+
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="card p-4 shadow-sm" style="max-width: 400px; width: 100%; border-radius: 15px;">
+        <h2 class="text-center mb-4">SIGN UP</h2>
+
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+        }
+
+        <form asp-action="Register" asp-controller="Register" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <div class="form-group mb-3">
+                <input asp-for="Email" class="form-control" placeholder="Email" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3 row">
+                <div class="col">
+                    <input asp-for="FirstName" class="form-control" placeholder="First Name" />
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+                <div class="col">
+                    <input asp-for="LastName" class="form-control" placeholder="Last Name" />
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group mb-3">
+                <input asp-for="PhoneNumber" class="form-control" placeholder="Enter your phone number" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <input asp-for="Password" class="form-control" type="password" placeholder="Password" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <input asp-for="ConfirmPassword" class="form-control" type="password" placeholder="Confirm Password" />
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label>Hobbies</label>
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" name="Hobbies" value="Books" @(Model != null && Model.Hobbies != null && Model.Hobbies.Contains("Books") ? "checked" : "") />
+                    <label class="form-check-label">Books</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" name="Hobbies" value="Games" @(Model != null && Model.Hobbies != null && Model.Hobbies.Contains("Games") ? "checked" : "") />
+                    <label class="form-check-label">Games</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" name="Hobbies" value="Movies" @(Model != null && Model.Hobbies != null && Model.Hobbies.Contains("Movies") ? "checked" : "") />
+                    <label class="form-check-label">Movies</label>
+                </div>
+            </div>
+
+            <div class="form-group mb-3">
+                <div class="form-check">
+                    <input asp-for="AgreeToTerms" class="form-check-input" type="checkbox" />
+                    <label asp-for="AgreeToTerms" class="form-check-label">I agree to the terms and condition</label>
+                    <span asp-validation-for="AgreeToTerms" class="text-danger"></span>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block">SIGN UP</button>
+        </form>
+
+        <div class="text-center mt-3">
+            <p>Already have an account? <a asp-controller="Login" asp-action="Login" class="text-primary">Login</a></p>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
